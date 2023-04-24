@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -12,7 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.wizelineproject.R
-import com.example.wizelineproject.databinding.FragmentMoviesListBinding
+import com.example.wizelineproject.databinding.FragmentTopRatedBinding
 import com.example.wizelineproject.domain.entities.Movie
 import com.example.wizelineproject.presentation.MoviesAdapter
 import com.example.wizelineproject.presentation.MoviesViewModel
@@ -20,8 +19,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 
 @AndroidEntryPoint
-class MoviesListFragment : Fragment(), MoviesAdapter.OnItemClickListener {
-    private var _binding: FragmentMoviesListBinding? = null
+class TopRatedFragment : Fragment(), MoviesAdapter.OnItemClickListener {
+    private var _binding: FragmentTopRatedBinding? = null
     private val binding get() = _binding!!
     private val viewModel: MoviesViewModel by activityViewModels()
     private var recyclerAdapter: MoviesAdapter? = null
@@ -31,18 +30,18 @@ class MoviesListFragment : Fragment(), MoviesAdapter.OnItemClickListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentMoviesListBinding.inflate(inflater, container, false)
+        _binding = FragmentTopRatedBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        (activity as AppCompatActivity?)!!.supportActionBar!!.show()
-        viewModel.getNowPlayingMovies()
-        observeNowPlayingMovies()
+//        viewModel.getNowPlayingMovies()
+        viewModel.getTopRatedMovies()
+        observeTopRatedMovies()
     }
 
-    private fun observeNowPlayingMovies() {
+    private fun observeTopRatedMovies() {
         uiJob = lifecycleScope.launchWhenCreated {
             viewModel.uiState.collect { result ->
                 fillRecyclerMovies(result.moviesList)
@@ -59,14 +58,14 @@ class MoviesListFragment : Fragment(), MoviesAdapter.OnItemClickListener {
     }
 
     companion object {
-        val tag = MoviesListFragment::class.java.canonicalName!!
+        val tag = TopRatedFragment::class.java.canonicalName!!
 
         @JvmStatic
-        fun newInstance() = MoviesListFragment()
+        fun newInstance() = TopRatedFragment()
     }
 
     override fun onItemClick(item: Movie?) {
         val bundle = bundleOf("selectedMovie" to item)
-        findNavController().navigate(R.id.action_moviesListFragment_to_detailMovieFragment, bundle)
+        findNavController().navigate(R.id.action_topRatedFragment_to_detailMovieFragment, bundle)
     }
 }

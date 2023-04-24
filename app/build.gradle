@@ -8,6 +8,25 @@ plugins {
 apply plugin: 'kotlin-kapt'
 apply plugin: 'com.android.application'
 apply plugin: 'com.google.dagger.hilt.android'
+apply plugin: 'org.jetbrains.kotlin.android.extensions'
+
+
+static def getProperties(String propertiesFile) {
+    Properties props = new Properties()
+    def propFile = new File(propertiesFile)
+    if (propFile.canRead()) {
+        props.load(new FileInputStream(propFile))
+
+        if (props != null) {
+            println("Error loading project.properties")
+        }
+    } else {
+        println("Error loading project.properties")
+    }
+    return props
+}
+
+Properties mProjectProps = getProperties('local.properties')
 
 android {
     namespace 'com.example.wizelineproject'
@@ -21,6 +40,8 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "API_KEY", "\"${mProjectProps['API_KEY']}\"")
     }
 
     buildTypes {
@@ -39,6 +60,15 @@ android {
     buildFeatures {
         viewBinding true
     }
+    androidExtensions {
+        experimental = true
+    }
+    buildFeatures {
+        compose true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.2.0"
+    }
 }
 
 dependencies {
@@ -56,6 +86,9 @@ dependencies {
 
     // Firebase UI
     implementation 'com.firebaseui:firebase-ui-auth:8.0.2'
+    implementation 'androidx.compose.material:material:1.4.2'
+    implementation 'androidx.compose.ui:ui-tooling-preview:1.4.2'
+    debugImplementation 'androidx.compose.ui:ui-tooling:1.4.2'
 
     //Navigation
     def nav_version = "2.5.3"
@@ -63,8 +96,9 @@ dependencies {
     implementation("androidx.navigation:navigation-ui-ktx:$nav_version")
 
     //Retrofit
-    def okhttp_version = "5.0.0"
+    def okhttp_version = "4.9.3"
     def retrofit_version = "2.9.0"
+    implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
     implementation "com.squareup.retrofit2:adapter-rxjava2:2.6.1"
@@ -76,6 +110,13 @@ dependencies {
     //GLIDE
     implementation 'com.github.bumptech.glide:glide:4.15.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.15.0'
+
+    implementation 'androidx.compose.ui:ui:1.4.1'//Compose
+    implementation 'androidx.room:room-runtime:2.5.0' //Room
+    implementation 'androidx.room:room-ktx:2.5.0' //Coroutines and Room
+    kapt 'androidx.room:room-compiler:2.5.0' //Room
+    implementation 'androidx.compose.material3:material3:1.0.0-alpha11'
+    implementation("io.coil-kt:coil-compose:2.3.0")
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'

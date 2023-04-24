@@ -1,8 +1,8 @@
-package com.example.wizelineproject.config
+package com.example.wizelineproject
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
-class BadAplication: Application() {
+class BadAplication : Application() {
 }
