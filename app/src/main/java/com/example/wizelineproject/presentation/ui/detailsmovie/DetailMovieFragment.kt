@@ -5,23 +5,29 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
+import com.example.wizelineproject.data.database.entities.MoviesGenreEntity
 import com.example.wizelineproject.databinding.FragmentDetailMovieBinding
 import com.example.wizelineproject.domain.entities.Movie
+import com.example.wizelineproject.presentation.MoviesViewModel
 import com.example.wizelineproject.presentation.ui.detailsmovie.compose.DetailScreen
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class DetailMovieFragment : Fragment() {
     private var _binding: FragmentDetailMovieBinding? = null
     private val binding get() = _binding!!
+    private val viewModel: MoviesViewModel by activityViewModels()
     private lateinit var currentMovie: Movie
+    private var localGenreList: List<String> = listOf()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,7 +42,7 @@ class DetailMovieFragment : Fragment() {
                         modifier = Modifier.fillMaxSize(),
                         color = MaterialTheme.colors.background
                     ) {
-                        DetailScreen(selectedMovie = currentMovie)
+                        DetailScreen(selectedMovie = currentMovie, genresList = localGenreList)
                     }
                 }
             }
@@ -45,7 +51,6 @@ class DetailMovieFragment : Fragment() {
         return binding.root
     }
 
-    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         arguments?.let {
@@ -59,12 +64,34 @@ class DetailMovieFragment : Fragment() {
                 }
             }
         }
+//        currentMovie = arguments?.getParcelable("selectedMovie", Movie::class.java)!!
+        viewModel.getMovieWithGenres(currentMovieId = currentMovie.id)
+        observeMovieWithGenre()
+    }
+
+    private fun fillGenresMovie(genreList: List<String>) {
+        localGenreList = genreList
+    }
+
+    private fun observeMovieWithGenre() {
+        lifecycleScope.launch {
+            viewModel.uiState.collect { result ->
+                fillGenresMovie(result.genreList)
+            }
+        }
     }
 
     companion object {
         val tag = DetailMovieFragment::class.java.canonicalName!!
 
         @JvmStatic
-        fun newInstance() = DetailMovieFragment()
+        fun newInstance(selectedMovie: Movie): DetailMovieFragment {
+            val fragment = DetailMovieFragment()
+//            val args = Bundle()
+//            args.putParcelable("selectedMovie", selectedMovie)
+//            fragment.arguments = args
+//            currentMovie = selectedMovie
+            return fragment
+        }
     }
 }

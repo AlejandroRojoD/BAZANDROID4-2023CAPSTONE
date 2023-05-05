@@ -7,11 +7,11 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.wizelineproject.R
 import com.example.wizelineproject.databinding.FragmentLoginBinding
-import com.google.android.gms.tasks.Task
-import com.google.firebase.auth.AuthResult
+import com.example.wizelineproject.presentation.MoviesViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -24,6 +24,7 @@ class LoginFragment : Fragment(), View.OnClickListener {
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
     private lateinit var auth: FirebaseAuth
+    private val viewModel: MoviesViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -68,46 +69,31 @@ class LoginFragment : Fragment(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v?.id) {
             binding.btnLogin.id -> {
-                validateCredentials()
+                doLogin()
             }
-            binding.btnGoogle.id -> {
-                initSignInWithGoogle()
-            }
+
             binding.btnRegister.id -> {
                 goToRegisterFragment()
             }
         }
     }
 
-    private fun initSignInWithGoogle() {
-
-    }
-
-    private fun validateCredentials() {
-        if (!binding.userField.text?.trim().isNullOrEmpty() && !binding.passwordField.text?.trim()
-                .isNullOrEmpty()
-        ) {
-            Observable.fromCallable<Task<AuthResult>> {
-                auth.signInWithEmailAndPassword(
-                    binding.userField.text.toString(),
-                    binding.passwordField.text.toString()
-                )
-            }.subscribe {
-                it.addOnCompleteListener(requireActivity()) { task ->
-                    if (task.isSuccessful) {
-                        // Sign in success, update UI with the signed-in user's information
-                        val user = auth.currentUser
-                        goToMoviesListFragment()
-                    } else {
-                        // If sign in fails, display a message to the user.
-                        Toast.makeText(
-                            requireContext(), "Authentication failed.",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
+    private fun doLogin() {
+        val user = binding.userField.text?.trim().toString()
+        val pass = binding.passwordField.text?.trim().toString()
+        viewModel.doLogin(user, pass, auth)?.subscribe {
+            it.addOnCompleteListener(requireActivity()) { task ->
+                if (task.isSuccessful) {
+                    // Sign in success, update UI with the signed-in user's information
+                    goToMoviesListFragment()
+                } else {
+                    // If sign in fails, display a message to the user.
+                    Toast.makeText(
+                        requireContext(), "Authentication failed.",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
-
         }
     }
 }

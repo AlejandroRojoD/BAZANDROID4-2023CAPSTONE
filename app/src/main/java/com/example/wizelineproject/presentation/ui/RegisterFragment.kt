@@ -48,7 +48,6 @@ class RegisterFragment : Fragment() {
             .addOnCompleteListener(requireActivity()) { task ->
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
-                    val user = auth.currentUser
                     goToLoginFragment()
                 } else {
                     // If sign in fails, display a message to the user.
@@ -71,7 +70,7 @@ class RegisterFragment : Fragment() {
 
 
     companion object {
-        val TAG = RegisterFragment::class.java.canonicalName
+        val TAG = RegisterFragment::class.java.canonicalName!!
 
         @JvmStatic
         fun newInstance() = RegisterFragment()

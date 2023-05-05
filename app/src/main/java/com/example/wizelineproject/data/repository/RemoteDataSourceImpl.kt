@@ -1,18 +1,20 @@
 package com.example.wizelineproject.data.repository
 
+import com.example.wizelineproject.data.mappers.toGenreList
 import com.example.wizelineproject.data.mappers.toMovie
 import com.example.wizelineproject.data.mappers.toMovieList
 import com.example.wizelineproject.data.network.MoviesApi
+import com.example.wizelineproject.domain.entities.Genre
 import com.example.wizelineproject.domain.entities.Movie
-import com.example.wizelineproject.domain.repository.MoviesRepository
+import com.example.wizelineproject.domain.repository.RemoteDataSource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class MoviesRepositoryImpl @Inject constructor(
+class RemoteDataSourceImpl @Inject constructor(
     private val moviesApi: MoviesApi
 ) :
-    MoviesRepository {
+    RemoteDataSource {
 
     override suspend fun getLatestMovie(): Movie =
         withContext(Dispatchers.IO) {
@@ -28,4 +30,10 @@ class MoviesRepositoryImpl @Inject constructor(
         withContext(Dispatchers.IO) {
             moviesApi.getTopRatedMovies().toMovieList()
         }
+
+    override suspend fun getMoviesGenreList(): List<Genre> =
+        withContext(Dispatchers.IO) {
+            moviesApi.getMoviesGenreList().toGenreList()
+        }
+
 }

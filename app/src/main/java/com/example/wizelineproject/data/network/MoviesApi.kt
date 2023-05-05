@@ -1,6 +1,7 @@
 package com.example.wizelineproject.data.network
 
 import com.example.wizelineproject.config.Constants
+import com.example.wizelineproject.data.model.GenreListResponse
 import com.example.wizelineproject.data.model.MovieListResponse
 import com.example.wizelineproject.data.model.MovieResponse
 import retrofit2.http.GET
@@ -14,4 +15,7 @@ interface MoviesApi {
 
     @GET(Constants.WebServices.GET_TOP_RATED)
     suspend fun getTopRatedMovies(): MovieListResponse
+
+    @GET(Constants.WebServices.GET_MOVIES_GENRE)
+    suspend fun getMoviesGenreList(): GenreListResponse
 }

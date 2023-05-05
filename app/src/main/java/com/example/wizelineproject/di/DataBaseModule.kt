@@ -5,8 +5,8 @@ import androidx.room.Room
 import com.example.wizelineproject.config.Constants
 import com.example.wizelineproject.data.database.AppDatabase
 import com.example.wizelineproject.data.database.dao.MoviesDao
-import com.example.wizelineproject.data.repository.DatabaseRepositoryImpl
-import com.example.wizelineproject.domain.repository.DatabaseRepository
+import com.example.wizelineproject.data.repository.LocalDataSourceImpl
+import com.example.wizelineproject.domain.repository.LocalDataSource
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -17,7 +17,6 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 @Module
 class DataBaseModule {
-
     @Singleton
     @Provides
     fun providesDatabase(@ApplicationContext context: Context): AppDatabase =
@@ -33,6 +32,6 @@ class DataBaseModule {
 
     @Singleton
     @Provides
-    fun provideDatabaseRepository(moviesDao: MoviesDao): DatabaseRepository =
-        DatabaseRepositoryImpl(moviesDao)
+    fun provideLocalDataSource(moviesDao: MoviesDao): LocalDataSource =
+        LocalDataSourceImpl(moviesDao)
 }

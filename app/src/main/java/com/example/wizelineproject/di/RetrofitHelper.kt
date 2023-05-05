@@ -3,8 +3,11 @@ package com.example.wizelineproject.di
 import com.example.wizelineproject.config.Constants
 import com.example.wizelineproject.config.HeaderInterceptor
 import com.example.wizelineproject.data.network.MoviesApi
-import com.example.wizelineproject.data.repository.MoviesRepositoryImpl
-import com.example.wizelineproject.domain.repository.MoviesRepository
+import com.example.wizelineproject.data.repository.RemoteDataSourceImpl
+import com.example.wizelineproject.data.repository.RepositoryImpl
+import com.example.wizelineproject.domain.repository.LocalDataSource
+import com.example.wizelineproject.domain.repository.RemoteDataSource
+import com.example.wizelineproject.domain.repository.Repository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -46,7 +49,16 @@ object RetrofitHelper {
 
     @Singleton
     @Provides
-    fun provideDogRepository(moviesApi: MoviesApi): MoviesRepository =
-        MoviesRepositoryImpl(moviesApi)
+    fun provideRemoteDataSource(moviesApi: MoviesApi): RemoteDataSource =
+        RemoteDataSourceImpl(moviesApi)
+
+
+    @Singleton
+    @Provides
+    fun provideRepository(
+        remoteDataSource: RemoteDataSource,
+        localDataSource: LocalDataSource
+    ): Repository =
+        RepositoryImpl(remoteDataSource, localDataSource)
 
 }

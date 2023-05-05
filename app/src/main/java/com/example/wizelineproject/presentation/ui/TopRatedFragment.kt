@@ -16,7 +16,7 @@ import com.example.wizelineproject.domain.entities.Movie
 import com.example.wizelineproject.presentation.MoviesAdapter
 import com.example.wizelineproject.presentation.MoviesViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class TopRatedFragment : Fragment(), MoviesAdapter.OnItemClickListener {
@@ -24,25 +24,26 @@ class TopRatedFragment : Fragment(), MoviesAdapter.OnItemClickListener {
     private val binding get() = _binding!!
     private val viewModel: MoviesViewModel by activityViewModels()
     private var recyclerAdapter: MoviesAdapter? = null
-    private var uiJob: Job? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentTopRatedBinding.inflate(inflater, container, false)
+        recyclerAdapter = MoviesAdapter(this)
+        binding.recyclerMovies.layoutManager = LinearLayoutManager(requireContext())
+        binding.recyclerMovies.adapter = recyclerAdapter
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        viewModel.getNowPlayingMovies()
         viewModel.getTopRatedMovies()
         observeTopRatedMovies()
     }
 
     private fun observeTopRatedMovies() {
-        uiJob = lifecycleScope.launchWhenCreated {
+        lifecycleScope.launch {
             viewModel.uiState.collect { result ->
                 fillRecyclerMovies(result.moviesList)
             }
@@ -51,15 +52,11 @@ class TopRatedFragment : Fragment(), MoviesAdapter.OnItemClickListener {
 
     private fun fillRecyclerMovies(moviesList: List<Movie>) {
         if (moviesList.isNotEmpty()) {
-            recyclerAdapter = MoviesAdapter(moviesList, requireContext(), this)
-            binding.recyclerMovies.layoutManager = LinearLayoutManager(requireContext())
-            binding.recyclerMovies.adapter = recyclerAdapter
+            recyclerAdapter?.submitList(moviesList)
         }
     }
 
     companion object {
-        val tag = TopRatedFragment::class.java.canonicalName!!
-
         @JvmStatic
         fun newInstance() = TopRatedFragment()
     }

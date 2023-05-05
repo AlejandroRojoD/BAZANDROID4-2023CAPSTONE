@@ -7,4 +7,5 @@ data class DataState(
     val moviesList: List<Movie> = emptyList(),
     val latestMovie: Movie? = null,
     val errorMessage: String? = null,
+    val genreList: List<String> = emptyList()
 )

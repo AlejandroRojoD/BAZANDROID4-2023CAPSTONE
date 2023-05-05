@@ -1,8 +1,8 @@
 package com.example.wizelineproject.presentation.ui.detailsmovie.compose
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -16,14 +16,15 @@ fun DescriptionContainer(
     modifier: Modifier,
     movieTitle: String = "",
     movieOverview: String = "",
-    releaseDate: String = ""
+    releaseDate: String = "",
+    genresList: List<String> = listOf()
 ) {
     Column(modifier = modifier) {
         Row() {
             Text(
                 modifier = Modifier.width(95.dp),
                 fontWeight = FontWeight.Bold,
-                text = "Titulo",
+                text = "Titulo:",
                 style = TextStyle(fontSize = 15.sp)
             )
             Text(
@@ -36,7 +37,7 @@ fun DescriptionContainer(
             Text(
                 modifier = Modifier.width(95.dp),
                 fontWeight = FontWeight.Bold,
-                text = "Sinopsis",
+                text = "Sinopsis:",
                 style = TextStyle(fontSize = 15.sp)
             )
             Text(
@@ -49,13 +50,27 @@ fun DescriptionContainer(
             Text(
                 modifier = Modifier.width(95.dp),
                 fontWeight = FontWeight.Bold,
-                text = "Lanzamiento",
+                text = "Lanzamiento:",
                 style = TextStyle(fontSize = 15.sp)
             )
             Text(
                 text = releaseDate,
                 style = TextStyle(fontSize = 15.sp)
             )
+        }
+        Row() {
+            Text(
+                modifier = Modifier.width(95.dp),
+                fontWeight = FontWeight.Bold,
+                text = "Genero:",
+                style = TextStyle(fontSize = 15.sp)
+            )
+            LazyRow(modifier = Modifier.fillMaxSize()) {
+                items(genresList) {
+                    Chip(category = it)
+                    Spacer(modifier = Modifier.width(4.dp))
+                }
+            }
         }
     }
 

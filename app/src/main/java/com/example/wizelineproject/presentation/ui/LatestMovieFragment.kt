@@ -12,14 +12,13 @@ import com.example.wizelineproject.databinding.FragmentLatestMovieBinding
 import com.example.wizelineproject.domain.entities.Movie
 import com.example.wizelineproject.presentation.MoviesViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class LatestMovieFragment : Fragment() {
     private var _binding: FragmentLatestMovieBinding? = null
     private val binding get() = _binding!!
     private val viewModel: MoviesViewModel by activityViewModels()
-    private var uiJob: Job? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,7 +35,7 @@ class LatestMovieFragment : Fragment() {
     }
 
     private fun observeLatestMovie() {
-        uiJob = lifecycleScope.launchWhenCreated {
+        lifecycleScope.launch {
             viewModel.uiState.collect { result ->
                 fillMovieData(result.latestMovie)
             }

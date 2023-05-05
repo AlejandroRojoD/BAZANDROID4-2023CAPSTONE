@@ -1,51 +1,52 @@
 package com.example.wizelineproject.presentation
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.wizelineproject.BadAplication
 import com.example.wizelineproject.R
 import com.example.wizelineproject.domain.entities.Movie
+import kotlinx.android.synthetic.main.movie_item.view.*
 
 class MoviesAdapter(
-    private val mList: List<Movie>, private val context: Context,
     private val callback: OnItemClickListener
 ) :
-    RecyclerView.Adapter<MoviesAdapter.MoviesViewHolder>() {
+    ListAdapter<Movie, MoviesAdapter.MoviesViewHolder>(ItemDiffCallback()) {
 
-
-    inner class MoviesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val movieImage = itemView.findViewById<ImageView>(R.id.imageContainer)
-        val movieTitle = itemView.findViewById<TextView>(R.id.title)
-        val movieOverview = itemView.findViewById<TextView>(R.id.overView)
-        val movieRate = itemView.findViewById<TextView>(R.id.rate)
-        val itemContainer = itemView.findViewById<ConstraintLayout>(R.id.itemContainer)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MoviesViewHolder {
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.movie_item, parent, false)
+        return MoviesViewHolder(view)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MoviesViewHolder =
-        MoviesViewHolder(
-            LayoutInflater.from(parent.context).inflate(
-                R.layout.movie_item, parent, false
-            )
-        )
-
-    override fun getItemCount(): Int = mList.size
-
     override fun onBindViewHolder(holder: MoviesViewHolder, position: Int) {
-        val movie = mList[position]
+        val item = getItem(position)
+        holder.bind(item = item, listener = callback)
+    }
 
-        holder.movieTitle.text = movie.title
-        holder.movieOverview.text = movie.overview
-        holder.movieRate.text = movie.rating.toString()
-        Glide.with(context)
-            .load(movie.posterUrl)
-            .into(holder.movieImage)
-        holder.itemContainer.setOnClickListener { callback.onItemClick(movie) }
+    class MoviesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        fun bind(item: Movie, listener: OnItemClickListener) {
+            itemView.setOnClickListener { listener.onItemClick(item) }
+            itemView.title.text = item.title
+            itemView.overView.text = item.overview
+            itemView.rate.text = item.rating.toString()
+            Glide.with(BadAplication.appContext)
+                .load(item.posterUrl)
+                .into(itemView.imageContainer)
+        }
+    }
+
+    class ItemDiffCallback : DiffUtil.ItemCallback<Movie>() {
+        override fun areItemsTheSame(oldItem: Movie, newItem: Movie): Boolean {
+            return oldItem.id == newItem.id
+        }
+
+        override fun areContentsTheSame(oldItem: Movie, newItem: Movie): Boolean {
+            return oldItem == newItem
+        }
     }
 
     interface OnItemClickListener {
