@@ -7,7 +7,7 @@ import javax.inject.Inject
 class GetLatestMovieUseCase @Inject constructor(
     private val repository: Repository
 ) {
-    suspend operator fun invoke(): Result<com.example.local.entities.Movie> = runCatching {
+    suspend operator fun invoke(): Result<Movie> = runCatching {
         return try {
             val movie = repository.getLatestMovie()
             Result.success(movie)

@@ -15,7 +15,7 @@ import com.example.local.entities.Movie
 @Composable
 fun DetailScreen(
     modifier: Modifier = Modifier,
-    selectedMovie: com.example.local.entities.Movie,
+    selectedMovie: Movie,
     genresList: List<String>
 ) {
     Surface(

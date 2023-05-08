@@ -1,6 +1,6 @@
 package com.example.wizelineproject.data.remote.service
 
-import com.example.wizelineproject.config.Constants
+import com.example.wizelineproject.data.remote.Constants
 import com.example.wizelineproject.data.remote.model.GenreListResponse
 import com.example.wizelineproject.data.remote.model.MovieListResponse
 import com.example.wizelineproject.data.remote.model.MovieResponse

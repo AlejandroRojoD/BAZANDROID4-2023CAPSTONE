@@ -7,7 +7,7 @@ import javax.inject.Inject
 class GetTopRatedMoviesUseCase @Inject constructor(
     private val repository: Repository
 ) {
-    suspend operator fun invoke(): Result<List<com.example.local.entities.Movie>> = runCatching {
+    suspend operator fun invoke(): Result<List<Movie>> = runCatching {
         return try {
             val movies = repository.getTopRatedMovies()
             Result.success(movies)

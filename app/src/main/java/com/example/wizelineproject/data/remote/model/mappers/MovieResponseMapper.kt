@@ -1,11 +1,11 @@
-package com.example.wizelineproject.data.mappers
+package com.example.wizelineproject.data.remote.model.mappers
 
-import com.example.wizelineproject.config.Constants.IMAGE_PREFIX
 import com.example.local.entities.Movie
+import com.example.wizelineproject.data.remote.Constants.IMAGE_PREFIX
 import com.example.wizelineproject.data.remote.model.MovieResponse
 
 
-fun MovieResponse.toMovie() = com.example.local.entities.Movie(
+fun MovieResponse.toMovie() = Movie(
     id = id,
     title = title.ifEmpty { "" },
     posterUrl = completeImageUrl(posterPath) ?: "",

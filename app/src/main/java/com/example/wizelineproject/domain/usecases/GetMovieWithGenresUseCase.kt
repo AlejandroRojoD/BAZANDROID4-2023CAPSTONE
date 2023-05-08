@@ -7,7 +7,7 @@ import javax.inject.Inject
 class GetMovieWithGenresUseCase @Inject constructor(
     private val repository: Repository
 ) {
-    suspend fun getMovieWithGenres(movieId: Int): Result<com.example.local.entities.MoviesWithGenres> = runCatching {
+    suspend fun getMovieWithGenres(movieId: Int): Result<MoviesWithGenres> = runCatching {
         return try {
             val movies = repository.getMovieWithGenre(movieId)
             Result.success(movies)

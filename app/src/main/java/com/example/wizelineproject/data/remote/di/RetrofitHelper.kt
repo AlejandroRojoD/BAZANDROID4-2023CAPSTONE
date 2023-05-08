@@ -1,12 +1,12 @@
 package com.example.wizelineproject.data.remote.di
 
-import com.example.wizelineproject.config.Constants
+import com.example.local.repository.LocalDataSource
+import com.example.wizelineproject.data.remote.Constants
 import com.example.wizelineproject.data.remote.interceptor.HeaderInterceptor
 import com.example.wizelineproject.data.remote.service.MoviesApi
-import com.example.wizelineproject.data.repository.RemoteDataSourceImpl
+import com.example.wizelineproject.data.remote.repository.RemoteDataSourceImpl
 import com.example.wizelineproject.data.repository.RepositoryImpl
-import com.example.local.repository.LocalDataSource
-import com.example.wizelineproject.domain.repository.RemoteDataSource
+import com.example.wizelineproject.data.remote.repository.RemoteDataSource
 import com.example.wizelineproject.domain.repository.Repository
 import dagger.Module
 import dagger.Provides
@@ -51,14 +51,5 @@ object RetrofitHelper {
     @Provides
     fun provideRemoteDataSource(moviesApi: MoviesApi): RemoteDataSource =
         RemoteDataSourceImpl(moviesApi)
-
-
-    @Singleton
-    @Provides
-    fun provideRepository(
-        remoteDataSource: RemoteDataSource,
-        localDataSource: com.example.local.repository.LocalDataSource
-    ): Repository =
-        RepositoryImpl(remoteDataSource, localDataSource)
 
 }

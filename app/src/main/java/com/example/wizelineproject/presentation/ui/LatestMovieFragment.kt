@@ -42,7 +42,7 @@ class LatestMovieFragment : Fragment() {
         }
     }
 
-    private fun fillMovieData(latestMovie: com.example.local.entities.Movie?) {
+    private fun fillMovieData(latestMovie: Movie?) {
         if (!latestMovie?.posterUrl.isNullOrEmpty()) {
             Glide.with(requireContext())
                 .load(latestMovie?.posterUrl)

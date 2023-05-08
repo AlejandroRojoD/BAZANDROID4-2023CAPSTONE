@@ -8,7 +8,7 @@ apply plugin: 'com.google.dagger.hilt.android'
 apply plugin: 'org.jetbrains.kotlin.android.extensions'
 
 android {
-    namespace 'com.example.local'
+    namespace 'com.example.remote'
     compileSdk 33
 
     defaultConfig {
@@ -29,9 +29,6 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-    androidExtensions {
-        experimental = true
-    }
     kotlinOptions {
         jvmTarget = '1.8'
     }
@@ -39,21 +36,24 @@ android {
 
 dependencies {
 
-    implementation 'androidx.core:core-ktx:1.7.0'
-    implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.8.0'
-
     //Dagger HILT
     implementation 'com.google.dagger:hilt-android:2.45'
     kapt 'com.google.dagger:hilt-compiler:2.45'
 
-    //ROOM
-    implementation 'androidx.room:room-runtime:2.5.0' //Room
-    implementation 'androidx.room:room-ktx:2.5.0' //Coroutines and Room
-    kapt 'androidx.room:room-compiler:2.5.0' //Room
+    //Retrofit
+    def okhttp_version = "4.9.3"
+    def retrofit_version = "2.9.0"
+    implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:2.6.1"
+
 
     testImplementation 'io.mockk:mockk:1.13.5'
 
+    implementation 'androidx.core:core-ktx:1.7.0'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.8.0'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'

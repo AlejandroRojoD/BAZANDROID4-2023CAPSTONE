@@ -1,7 +1,5 @@
 package com.example.wizelineproject.data.remote.model
 
-import com.example.wizelineproject.data.model.BaseError
-
-class GenreListResponse : BaseError() {
+class GenreListResponse {
     val genres: List<GenreResponse> = listOf()
 }
