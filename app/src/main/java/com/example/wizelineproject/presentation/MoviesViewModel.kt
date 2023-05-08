@@ -3,8 +3,8 @@ package com.example.wizelineproject.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.wizelineproject.config.DataState
-import com.example.wizelineproject.data.database.entities.MoviesWithGenres
-import com.example.wizelineproject.domain.entities.Movie
+import com.example.local.entities.Movie
+import com.example.local.entities.MoviesWithGenres
 import com.example.wizelineproject.domain.usecases.GetLatestMovieUseCase
 import com.example.wizelineproject.domain.usecases.GetMovieWithGenresUseCase
 import com.example.wizelineproject.domain.usecases.GetMoviesListUseCase
@@ -67,7 +67,7 @@ class MoviesViewModel @Inject constructor(
 
     fun getLatestMovie() = viewModelScope.launch {
         _uiState.update { it.copy(isLoading = true) }
-        val movieResult: Result<Movie> = getLatestMovieUseCase.invoke()
+        val movieResult: Result<com.example.local.entities.Movie> = getLatestMovieUseCase.invoke()
         movieResult.fold(
             onSuccess = { data ->
                 _uiState.update {
@@ -84,7 +84,7 @@ class MoviesViewModel @Inject constructor(
 
     fun getMovieWithGenres(currentMovieId: Int) = viewModelScope.launch {
         _uiState.update { it.copy(isLoading = true) }
-        val movieResult: Result<MoviesWithGenres> =
+        val movieResult: Result<com.example.local.entities.MoviesWithGenres> =
             getMovieWithGenresUseCase.getMovieWithGenres(currentMovieId)
         movieResult.fold(
             onSuccess = { data ->

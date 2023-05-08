@@ -1,30 +1,26 @@
 package com.example.wizelineproject.data.repository
 
-import com.example.wizelineproject.data.database.entities.MoviesWithGenres
-import com.example.wizelineproject.data.database.entities.toGenre
-import com.example.wizelineproject.data.database.entities.toNowPlaying
-import com.example.wizelineproject.data.database.entities.toTopRated
-import com.example.wizelineproject.domain.entities.Genre
-import com.example.wizelineproject.domain.entities.Movie
-import com.example.wizelineproject.domain.entities.toDomain
-import com.example.wizelineproject.domain.repository.LocalDataSource
+import com.example.local.entities.toDomain
+import com.example.local.entities.toGenre
+import com.example.local.entities.toNowPlaying
+import com.example.local.entities.toTopRated
 import com.example.wizelineproject.domain.repository.RemoteDataSource
 import com.example.wizelineproject.domain.repository.Repository
 import javax.inject.Inject
 
 class RepositoryImpl @Inject constructor(
     private val remoteDataSource: RemoteDataSource,
-    private val localDataSource: LocalDataSource
+    private val localDataSource: com.example.local.repository.LocalDataSource
 ) : Repository {
 
-    override suspend fun getNowPLayingMovies(): List<Movie> {
-        val genresList: List<Genre>
+    override suspend fun getNowPLayingMovies(): List<com.example.local.entities.Movie> {
+        val genresList: List<com.example.local.entities.Genre>
         if (localDataSource.getMoviesGenreListFromDb().isEmpty()) {
             genresList = remoteDataSource.getMoviesGenreList()
             localDataSource.insertMoviesGenreList(genresList.map { it.toGenre() })
         }
 
-        val data: List<Movie>
+        val data: List<com.example.local.entities.Movie>
         if (localDataSource.getNowPlayingMoviesFromDb().isEmpty()
         ) {
             data = remoteDataSource.getNowPLayingMovies()
@@ -35,8 +31,8 @@ class RepositoryImpl @Inject constructor(
         return data
     }
 
-    override suspend fun getTopRatedMovies(): List<Movie> {
-        val data: List<Movie>
+    override suspend fun getTopRatedMovies(): List<com.example.local.entities.Movie> {
+        val data: List<com.example.local.entities.Movie>
         if (localDataSource.getTopRatedMoviesFromDb().isEmpty()) {
             data = remoteDataSource.getTopRatedMovies()
             localDataSource.insertTopRatedMovies(data.map { it.toTopRated() })
@@ -46,11 +42,11 @@ class RepositoryImpl @Inject constructor(
         return data
     }
 
-    override suspend fun getLatestMovie(): Movie {
+    override suspend fun getLatestMovie(): com.example.local.entities.Movie {
         return remoteDataSource.getLatestMovie()
     }
 
-    override suspend fun getMovieWithGenre(movieId: Int): MoviesWithGenres =
+    override suspend fun getMovieWithGenre(movieId: Int): com.example.local.entities.MoviesWithGenres =
         localDataSource.getGenresForMovie(movieId)
 
 }

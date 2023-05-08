@@ -1,11 +1,12 @@
 package com.example.wizelineproject.domain.repository
 
-import com.example.wizelineproject.domain.entities.Genre
-import com.example.wizelineproject.domain.entities.Movie
+import com.example.local.entities.Genre
+import com.example.local.entities.Movie
+
 
 interface RemoteDataSource {
-    suspend fun getLatestMovie(): Movie
-    suspend fun getNowPLayingMovies(): List<Movie>
-    suspend fun getTopRatedMovies(): List<Movie>
-    suspend fun getMoviesGenreList(): List<Genre>
+    suspend fun getLatestMovie(): com.example.local.entities.Movie
+    suspend fun getNowPLayingMovies(): List<com.example.local.entities.Movie>
+    suspend fun getTopRatedMovies(): List<com.example.local.entities.Movie>
+    suspend fun getMoviesGenreList(): List<com.example.local.entities.Genre>
 }

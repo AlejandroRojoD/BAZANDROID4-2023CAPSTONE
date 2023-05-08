@@ -12,8 +12,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.wizelineproject.R
+import com.example.local.entities.Movie
 import com.example.wizelineproject.databinding.FragmentMoviesListBinding
-import com.example.wizelineproject.domain.entities.Movie
 import com.example.wizelineproject.presentation.MoviesAdapter
 import com.example.wizelineproject.presentation.MoviesViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -52,7 +52,7 @@ class MoviesListFragment : Fragment(), MoviesAdapter.OnItemClickListener {
         }
     }
 
-    private fun fillRecyclerMovies(moviesList: List<Movie>) {
+    private fun fillRecyclerMovies(moviesList: List<com.example.local.entities.Movie>) {
         if (moviesList.isNotEmpty()) {
             recyclerAdapter?.submitList(moviesList)
         }
@@ -63,7 +63,7 @@ class MoviesListFragment : Fragment(), MoviesAdapter.OnItemClickListener {
         fun newInstance() = MoviesListFragment()
     }
 
-    override fun onItemClick(item: Movie?) {
+    override fun onItemClick(item: com.example.local.entities.Movie?) {
         //TODO revisar el tema de pasar valores con navigation
         /*val fragment = DetailMovieFragment.newInstance(item?.id!!)
         requireActivity().supportFragmentManager

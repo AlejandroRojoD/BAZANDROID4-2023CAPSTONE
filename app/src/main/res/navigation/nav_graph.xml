@@ -68,5 +68,5 @@
     </fragment>
     <argument
         android:name="selectedMovie"
-        app:argType="com.example.wizelineproject.domain.entities.Movie" />
+        app:argType="com.example.local.entities.Movie" />
 </navigation>

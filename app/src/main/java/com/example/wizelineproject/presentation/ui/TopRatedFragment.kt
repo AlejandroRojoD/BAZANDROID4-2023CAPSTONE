@@ -11,8 +11,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.wizelineproject.R
+import com.example.local.entities.Movie
 import com.example.wizelineproject.databinding.FragmentTopRatedBinding
-import com.example.wizelineproject.domain.entities.Movie
 import com.example.wizelineproject.presentation.MoviesAdapter
 import com.example.wizelineproject.presentation.MoviesViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -50,7 +50,7 @@ class TopRatedFragment : Fragment(), MoviesAdapter.OnItemClickListener {
         }
     }
 
-    private fun fillRecyclerMovies(moviesList: List<Movie>) {
+    private fun fillRecyclerMovies(moviesList: List<com.example.local.entities.Movie>) {
         if (moviesList.isNotEmpty()) {
             recyclerAdapter?.submitList(moviesList)
         }
@@ -61,7 +61,7 @@ class TopRatedFragment : Fragment(), MoviesAdapter.OnItemClickListener {
         fun newInstance() = TopRatedFragment()
     }
 
-    override fun onItemClick(item: Movie?) {
+    override fun onItemClick(item: com.example.local.entities.Movie?) {
         val bundle = bundleOf("selectedMovie" to item)
         findNavController().navigate(R.id.action_topRatedFragment_to_detailMovieFragment, bundle)
     }

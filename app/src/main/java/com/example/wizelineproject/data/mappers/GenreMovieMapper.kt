@@ -1,9 +1,9 @@
 package com.example.wizelineproject.data.mappers
 
-import com.example.wizelineproject.data.model.GenreResponse
-import com.example.wizelineproject.domain.entities.Genre
+import com.example.local.entities.Genre
+import com.example.wizelineproject.data.remote.model.GenreResponse
 
-fun GenreResponse.toGenre() = Genre(
+fun GenreResponse.toGenre() = com.example.local.entities.Genre(
     id = id,
     name = name
 )

@@ -13,9 +13,8 @@ import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
-import com.example.wizelineproject.data.database.entities.MoviesGenreEntity
+import com.example.local.entities.Movie
 import com.example.wizelineproject.databinding.FragmentDetailMovieBinding
-import com.example.wizelineproject.domain.entities.Movie
 import com.example.wizelineproject.presentation.MoviesViewModel
 import com.example.wizelineproject.presentation.ui.detailsmovie.compose.DetailScreen
 import dagger.hilt.android.AndroidEntryPoint
@@ -26,7 +25,7 @@ class DetailMovieFragment : Fragment() {
     private var _binding: FragmentDetailMovieBinding? = null
     private val binding get() = _binding!!
     private val viewModel: MoviesViewModel by activityViewModels()
-    private lateinit var currentMovie: Movie
+    private lateinit var currentMovie: com.example.local.entities.Movie
     private var localGenreList: List<String> = listOf()
 
     override fun onCreateView(
@@ -55,11 +54,11 @@ class DetailMovieFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         arguments?.let {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                it.getParcelable("selectedMovie", Movie::class.java)?.let { model ->
+                it.getParcelable("selectedMovie", com.example.local.entities.Movie::class.java)?.let { model ->
                     currentMovie = model
                 }
             } else {
-                it.getParcelable<Movie>("selectedMovie")?.let { model ->
+                it.getParcelable<com.example.local.entities.Movie>("selectedMovie")?.let { model ->
                     currentMovie = model
                 }
             }
@@ -85,7 +84,7 @@ class DetailMovieFragment : Fragment() {
         val tag = DetailMovieFragment::class.java.canonicalName!!
 
         @JvmStatic
-        fun newInstance(selectedMovie: Movie): DetailMovieFragment {
+        fun newInstance(selectedMovie: com.example.local.entities.Movie): DetailMovieFragment {
             val fragment = DetailMovieFragment()
 //            val args = Bundle()
 //            args.putParcelable("selectedMovie", selectedMovie)

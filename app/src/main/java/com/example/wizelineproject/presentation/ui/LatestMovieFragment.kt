@@ -8,8 +8,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
+import com.example.local.entities.Movie
 import com.example.wizelineproject.databinding.FragmentLatestMovieBinding
-import com.example.wizelineproject.domain.entities.Movie
 import com.example.wizelineproject.presentation.MoviesViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -42,7 +42,7 @@ class LatestMovieFragment : Fragment() {
         }
     }
 
-    private fun fillMovieData(latestMovie: Movie?) {
+    private fun fillMovieData(latestMovie: com.example.local.entities.Movie?) {
         if (!latestMovie?.posterUrl.isNullOrEmpty()) {
             Glide.with(requireContext())
                 .load(latestMovie?.posterUrl)

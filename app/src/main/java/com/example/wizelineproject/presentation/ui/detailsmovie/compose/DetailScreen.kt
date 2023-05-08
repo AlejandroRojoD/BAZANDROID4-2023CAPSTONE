@@ -10,12 +10,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.wizelineproject.domain.entities.Movie
+import com.example.local.entities.Movie
 
 @Composable
 fun DetailScreen(
     modifier: Modifier = Modifier,
-    selectedMovie: Movie,
+    selectedMovie: com.example.local.entities.Movie,
     genresList: List<String>
 ) {
     Surface(
