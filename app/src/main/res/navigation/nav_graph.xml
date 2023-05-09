@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/loginFragment">
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.wizelineproject.presentation.ui.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login">
+        <action
+            android:id="@+id/action_loginFragment_to_moviesListFragment"
+            app:destination="@id/moviesListFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_registerFragment"
+            app:destination="@id/registerFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/moviesListFragment"
+        android:name="com.example.wizelineproject.presentation.ui.MoviesListFragment"
+        android:label="fragment_movies_list"
+        tools:layout="@layout/fragment_movies_list">
+        <action
+            android:id="@+id/action_moviesListFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_moviesListFragment_to_detailMovieFragment"
+            app:destination="@id/detailMovieFragment" />
+
+    </fragment>
+    <fragment
+        android:id="@+id/registerFragment"
+        android:name="com.example.wizelineproject.presentation.ui.RegisterFragment"
+        android:label="RegisterFragment">
+        <action
+            android:id="@+id/action_registerFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/topRatedFragment"
+        android:name="com.example.wizelineproject.presentation.ui.TopRatedFragment"
+        android:label="TopRatedFragment"
+        tools:layout="@layout/fragment_top_rated">
+        <action
+            android:id="@+id/action_topRatedFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_topRatedFragment_to_detailMovieFragment"
+            app:destination="@id/detailMovieFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/latestMovieFragment"
+        android:name="com.example.wizelineproject.presentation.ui.LatestMovieFragment"
+        android:label="LatestMovieFragment"
+        tools:layout="@layout/fragment_latest_movie">
+        <action
+            android:id="@+id/action_latestMovieFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailMovieFragment"
+        android:name="com.example.wizelineproject.presentation.ui.detailsmovie.DetailMovieFragment"
+        android:label="DetailMovieFragment">
+        <action
+            android:id="@+id/action_detailMovieFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
+    <argument
+        android:name="selectedMovie"
+        app:argType="com.example.wizelineproject.domain.entities.Movie" />
+</navigation>
